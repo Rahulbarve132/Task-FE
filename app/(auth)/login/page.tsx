@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -16,7 +16,13 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
   const router = useRouter();
-  const { loading, error } = useSelector((state: RootState) => state.auth);
+  const { loading, error, isAuthenticated, token } = useSelector((state: RootState) => state.auth);
+
+  useEffect(() => {
+    if (isAuthenticated || token) {
+      router.push('/dashboard');
+    }
+  }, [isAuthenticated, token, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,6 +30,7 @@ export default function LoginPage() {
     try {
       const data = await authService.login({ email, password });
       dispatch(setUser({ user: data.user, token: data.token }));
+      dispatch(setLoading(false));
       router.push('/dashboard');
     } catch (err: any) {
       dispatch(setError(err.response?.data?.message || 'Login failed'));

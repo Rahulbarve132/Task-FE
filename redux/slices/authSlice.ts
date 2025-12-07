@@ -12,14 +12,16 @@ interface AuthState {
   isAuthenticated: boolean;
   loading: boolean;
   error: string | null;
+  isInitialized: boolean;
 }
 
 const initialState: AuthState = {
   user: null,
-  token: null, // In a real app, check localStorage here or in a thunk/middleware
+  token: null,
   isAuthenticated: false,
   loading: false,
   error: null,
+  isInitialized: false,
 };
 
 const authSlice = createSlice({
@@ -59,15 +61,16 @@ const authSlice = createSlice({
     },
     // Initialize from local storage
     initializeAuth: (state) => {
-        if (typeof window !== 'undefined') {
-            const token = localStorage.getItem('token');
-            const user = localStorage.getItem('user');
-            if (token && user) {
-                state.token = token;
-                state.user = JSON.parse(user);
-                state.isAuthenticated = true;
-            }
+      if (typeof window !== 'undefined') {
+        const token = localStorage.getItem('token');
+        const user = localStorage.getItem('user');
+        if (token && user) {
+          state.token = token;
+          state.user = JSON.parse(user);
+          state.isAuthenticated = true;
         }
+      }
+      state.isInitialized = true;
     }
   },
 });

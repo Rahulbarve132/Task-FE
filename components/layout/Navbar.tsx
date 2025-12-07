@@ -15,7 +15,7 @@ export function Navbar() {
 
   const handleLogout = async () => {
     dispatch(logout());
-    router.push('/login');
+    // ProtectedRoute will handle the redirect automatically
   };
 
   if (!isAuthenticated) return null;

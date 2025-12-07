@@ -5,6 +5,7 @@ export interface Task {
     title: string;
     description?: string;
     status: 'todo' | 'in-progress' | 'done';
+    priority?: 'low' | 'medium' | 'high';
     createdAt: string;
 }
 
@@ -14,6 +15,7 @@ interface TaskState {
     filters: {
         status: string;
         search: string;
+        priority: string;
     };
     uiState: {
         isCreateModalOpen: boolean;
@@ -29,6 +31,7 @@ const initialState: TaskState = {
     filters: {
         status: '',
         search: '',
+        priority: '',
     },
     uiState: {
         isCreateModalOpen: false,

@@ -16,17 +16,20 @@ export function CreateTaskModal() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [status, setStatus] = useState<'todo' | 'in-progress' | 'done'>('todo');
+  const [priority, setPriority] = useState<'low' | 'medium' | 'high'>('medium');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     dispatch(setTaskLoading(true));
     try {
-      const newTask = await taskService.createTask({ title, description, status });
+      const newTask = await taskService.createTask({ title, description, status, priority });
       dispatch(addTask(newTask));
+      dispatch(setTaskLoading(false));
       dispatch(toggleCreateModal(false));
       setTitle('');
       setDescription('');
       setStatus('todo');
+      setPriority('medium');
     } catch (error: any) {
       dispatch(setTaskError(error.message || 'Failed to create task'));
     }
@@ -63,7 +66,7 @@ export function CreateTaskModal() {
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
               <textarea
-                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border"
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border text-gray-900 bg-white"
                 rows={3}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
@@ -73,13 +76,25 @@ export function CreateTaskModal() {
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
               <select
-                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border"
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border text-gray-900 bg-white"
                 value={status}
                 onChange={(e) => setStatus(e.target.value as any)}
               >
                 <option value="todo">To Do</option>
                 <option value="in-progress">In Progress</option>
                 <option value="done">Done</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Priority</label>
+              <select
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border text-gray-900 bg-white"
+                value={priority}
+                onChange={(e) => setPriority(e.target.value as any)}
+              >
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
               </select>
             </div>
             <div className="flex justify-end space-x-2 pt-2">

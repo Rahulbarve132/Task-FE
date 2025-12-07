@@ -1,14 +1,17 @@
-import Link from 'next/link';
+'use client';
+
 import { Task } from '../../redux/slices/taskSlice';
 import { Card } from '../ui/Card';
 import { Badge } from '../ui/Badge';
-import { Calendar, ArrowRight } from 'lucide-react';
+import { Pencil, Trash2 } from 'lucide-react';
 
 interface TaskCardProps {
   task: Task;
+  onEdit: (task: Task) => void;
+  onDelete: (id: string) => void;
 }
 
-export function TaskCard({ task }: TaskCardProps) {
+export function TaskCard({ task, onEdit, onDelete }: TaskCardProps) {
   const statusVariant =
     task.status === 'done'
       ? 'success'
@@ -16,26 +19,63 @@ export function TaskCard({ task }: TaskCardProps) {
       ? 'warning'
       : 'default';
 
+  const priorityVariant =
+    task.priority === 'high'
+      ? 'error'
+      : task.priority === 'low'
+      ? 'default'
+      : 'warning';
+
+  const priorityLabel = task.priority 
+    ? task.priority.charAt(0).toUpperCase() + task.priority.slice(1)
+    : 'Medium';
+
+  const statusLabel = task.status === 'todo' ? 'To Do' : 
+    task.status === 'in-progress' ? 'In Progress' : 'Done';
+
   return (
-    <Link href={`/tasks/${task.id}`}>
-      <Card className="p-4 hover:shadow-md transition-shadow cursor-pointer group">
-        <div className="flex justify-between items-start mb-2">
-          <h3 className="text-lg font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors">
-            {task.title}
-          </h3>
-          <Badge variant={statusVariant}>{task.status}</Badge>
-        </div>
-        <p className="text-gray-500 text-sm line-clamp-2 mb-4">
+    <Card className="p-4 hover:shadow-md transition-shadow">
+      <div className="space-y-3">
+        <h3 className="text-lg font-semibold text-gray-900">
+          {task.title}
+        </h3>
+        
+        <p className="text-gray-600 text-sm line-clamp-2">
           {task.description || 'No description provided.'}
         </p>
-        <div className="flex justify-between items-center text-xs text-gray-400">
-          <div className="flex items-center">
-            <Calendar className="h-3 w-3 mr-1" />
-            {new Date(task.createdAt).toLocaleDateString()}
-          </div>
-          <ArrowRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity text-indigo-600" />
+
+        <div className="flex items-center gap-2">
+          <Badge variant={priorityVariant} className="text-xs">
+            {priorityLabel}
+          </Badge>
+          <Badge variant={statusVariant} className="text-xs">
+            {statusLabel}
+          </Badge>
         </div>
-      </Card>
-    </Link>
+
+        <div className="flex items-center justify-end gap-2 pt-2 border-t border-gray-100">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onEdit(task);
+            }}
+            className="p-1.5 text-gray-600 hover:text-indigo-600 hover:bg-indigo-50 rounded transition-colors"
+            aria-label="Edit task"
+          >
+            <Pencil className="h-4 w-4" />
+          </button>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete(task.id);
+            }}
+            className="p-1.5 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
+            aria-label="Delete task"
+          >
+            <Trash2 className="h-4 w-4" />
+          </button>
+        </div>
+      </div>
+    </Card>
   );
 }

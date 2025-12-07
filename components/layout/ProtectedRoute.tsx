@@ -7,18 +7,21 @@ import { RootState } from '../../redux/store';
 import { Loader } from '../ui/Loader';
 
 export default function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated, loading, token } = useSelector((state: RootState) => state.auth);
+  const { isAuthenticated, loading, token, isInitialized } = useSelector((state: RootState) => state.auth);
   const router = useRouter();
 
   useEffect(() => {
-    // If not authenticated and not loading, redirect to login
-    // We check token as well because isAuthenticated might take a moment to sync from localStorage
-    if (!token && !loading) {
+    // If initialized, not authenticated and not loading, redirect to login
+    if (isInitialized && !token && !loading) {
       router.push('/login');
     }
-  }, [token, loading]);
+  }, [token, loading, isInitialized]);
 
 
+
+  if (!isInitialized || loading) {
+    return null; // Or a loader if preferred, but null avoids flash
+  }
 
   if (!isAuthenticated && !token) {
     return null; // Will redirect

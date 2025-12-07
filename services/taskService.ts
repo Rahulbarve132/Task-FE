@@ -2,7 +2,7 @@ import api from './api';
 import { Task } from '../redux/slices/taskSlice';
 
 export const taskService = {
-    getTasks: async (params?: { status?: string; search?: string }) => {
+    getTasks: async (params?: { status?: string; search?: string; priority?: string }) => {
         const response = await api.get('/tasks', { params });
         const rawTasks = Array.isArray(response.data) ? response.data : (response.data.tasks || []);
         try {
@@ -11,6 +11,7 @@ export const taskService = {
                 title: t.litle || t.title || 'Untitled',
                 description: t.description || '',
                 status: t.status || 'todo',
+                priority: t.priority || 'medium',
                 createdAt: t.createdAt || new Date().toISOString()
             }));
         } catch (error) {
@@ -27,18 +28,35 @@ export const taskService = {
             title: t.litle || t.title || 'Untitled',
             description: t.description || '',
             status: t.status || 'todo',
+            priority: t.priority || 'medium',
             createdAt: t.createdAt || new Date().toISOString()
         };
     },
 
     createTask: async (taskData: Partial<Task>) => {
         const response = await api.post('/tasks', taskData);
-        return response.data;
+        const t = response.data.task || response.data;
+        return {
+            id: t._id || t.id,
+            title: t.litle || t.title || 'Untitled',
+            description: t.description || '',
+            status: t.status || 'todo',
+            priority: t.priority || 'medium',
+            createdAt: t.createdAt || new Date().toISOString()
+        };
     },
 
     updateTask: async (id: string, taskData: Partial<Task>) => {
         const response = await api.put(`/tasks/${id}`, taskData);
-        return response.data;
+        const t = response.data.task || response.data;
+        return {
+            id: t._id || t.id,
+            title: t.litle || t.title || 'Untitled',
+            description: t.description || '',
+            status: t.status || 'todo',
+            priority: t.priority || 'medium',
+            createdAt: t.createdAt || new Date().toISOString()
+        };
     },
 
     deleteTask: async (id: string) => {
