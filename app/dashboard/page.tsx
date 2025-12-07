@@ -28,6 +28,11 @@ export default function DashboardPage() {
           status: filters.status || undefined,
           search: filters.search || undefined,
           priority: filters.priority || undefined,
+          dueDate: filters.dueDate || undefined,
+          dueDateFrom: filters.dueDateFrom || undefined,
+          dueDateTo: filters.dueDateTo || undefined,
+          overdue: filters.overdue || undefined,
+          upcoming: filters.upcoming || undefined,
         });
         dispatch(setTasks(data));
       } catch (error: any) {
@@ -38,7 +43,7 @@ export default function DashboardPage() {
     };
 
     fetchTasks();
-  }, [filters.status, filters.search, filters.priority]);
+  }, [filters.status, filters.search, filters.priority, filters.dueDate, filters.dueDateFrom, filters.dueDateTo, filters.overdue, filters.upcoming]);
 
   const handleEdit = (task: Task) => {
     setEditingTask(task);

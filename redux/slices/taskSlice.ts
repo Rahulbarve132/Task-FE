@@ -6,6 +6,7 @@ export interface Task {
     description?: string;
     status: 'todo' | 'in-progress' | 'done';
     priority?: 'low' | 'medium' | 'high';
+    dueDate?: string;
     createdAt: string;
 }
 
@@ -16,6 +17,11 @@ interface TaskState {
         status: string;
         search: string;
         priority: string;
+        dueDate: string;
+        dueDateFrom: string;
+        dueDateTo: string;
+        overdue: string;
+        upcoming: string;
     };
     uiState: {
         isCreateModalOpen: boolean;
@@ -32,6 +38,11 @@ const initialState: TaskState = {
         status: '',
         search: '',
         priority: '',
+        dueDate: '',
+        dueDateFrom: '',
+        dueDateTo: '',
+        overdue: '',
+        upcoming: '',
     },
     uiState: {
         isCreateModalOpen: false,

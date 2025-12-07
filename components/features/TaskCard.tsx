@@ -3,13 +3,56 @@
 import { Task } from '../../redux/slices/taskSlice';
 import { Card } from '../ui/Card';
 import { Badge } from '../ui/Badge';
-import { Pencil, Trash2 } from 'lucide-react';
+import { Pencil, Trash2, Calendar } from 'lucide-react';
 
 interface TaskCardProps {
   task: Task;
   onEdit: (task: Task) => void;
   onDelete: (id: string) => void;
 }
+
+const getDaysUntilDue = (dueDate: string): { days: number; text: string; color: string } => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  
+  const due = new Date(dueDate);
+  due.setHours(0, 0, 0, 0);
+  
+  const diffTime = due.getTime() - today.getTime();
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  
+  if (diffDays < 0) {
+    return {
+      days: diffDays,
+      text: `${Math.abs(diffDays)} day${Math.abs(diffDays) !== 1 ? 's' : ''} overdue`,
+      color: 'text-red-600 bg-red-50'
+    };
+  } else if (diffDays === 0) {
+    return {
+      days: diffDays,
+      text: 'Due today',
+      color: 'text-orange-600 bg-orange-50'
+    };
+  } else if (diffDays === 1) {
+    return {
+      days: diffDays,
+      text: 'Due tomorrow',
+      color: 'text-yellow-600 bg-yellow-50'
+    };
+  } else if (diffDays <= 7) {
+    return {
+      days: diffDays,
+      text: `Due in ${diffDays} days`,
+      color: 'text-blue-600 bg-blue-50'
+    };
+  } else {
+    return {
+      days: diffDays,
+      text: `Due in ${diffDays} days`,
+      color: 'text-gray-600 bg-gray-50'
+    };
+  }
+};
 
 export function TaskCard({ task, onEdit, onDelete }: TaskCardProps) {
   const statusVariant =
@@ -52,6 +95,15 @@ export function TaskCard({ task, onEdit, onDelete }: TaskCardProps) {
             {statusLabel}
           </Badge>
         </div>
+
+        {task.dueDate && (
+          <div className="flex items-center gap-1.5 text-xs">
+            <Calendar className="h-3.5 w-3.5" />
+            <span className={`px-2 py-1 rounded-md font-medium ${getDaysUntilDue(task.dueDate).color}`}>
+              {getDaysUntilDue(task.dueDate).text}
+            </span>
+          </div>
+        )}
 
         <div className="flex items-center justify-end gap-2 pt-2 border-t border-gray-100">
           <button

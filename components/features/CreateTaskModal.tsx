@@ -17,12 +17,13 @@ export function CreateTaskModal() {
   const [description, setDescription] = useState('');
   const [status, setStatus] = useState<'todo' | 'in-progress' | 'done'>('todo');
   const [priority, setPriority] = useState<'low' | 'medium' | 'high'>('medium');
+  const [dueDate, setDueDate] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     dispatch(setTaskLoading(true));
     try {
-      const newTask = await taskService.createTask({ title, description, status, priority });
+      const newTask = await taskService.createTask({ title, description, status, priority, dueDate: dueDate || undefined });
       dispatch(addTask(newTask));
       dispatch(setTaskLoading(false));
       dispatch(toggleCreateModal(false));
@@ -30,6 +31,7 @@ export function CreateTaskModal() {
       setDescription('');
       setStatus('todo');
       setPriority('medium');
+      setDueDate('');
     } catch (error: any) {
       dispatch(setTaskError(error.message || 'Failed to create task'));
     }
@@ -96,6 +98,15 @@ export function CreateTaskModal() {
                 <option value="medium">Medium</option>
                 <option value="high">High</option>
               </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Due Date</label>
+              <input
+                type="date"
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border text-gray-900 bg-white"
+                value={dueDate}
+                onChange={(e) => setDueDate(e.target.value)}
+              />
             </div>
             <div className="flex justify-end space-x-2 pt-2">
               <Button type="button" variant="secondary" onClick={() => dispatch(toggleCreateModal(false))}>

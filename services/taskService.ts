@@ -2,7 +2,16 @@ import api from './api';
 import { Task } from '../redux/slices/taskSlice';
 
 export const taskService = {
-    getTasks: async (params?: { status?: string; search?: string; priority?: string }) => {
+    getTasks: async (params?: {
+        status?: string;
+        search?: string;
+        priority?: string;
+        dueDate?: string;
+        dueDateFrom?: string;
+        dueDateTo?: string;
+        overdue?: string;
+        upcoming?: string;
+    }) => {
         const response = await api.get('/tasks', { params });
         const rawTasks = Array.isArray(response.data) ? response.data : (response.data.tasks || []);
         try {
@@ -12,6 +21,7 @@ export const taskService = {
                 description: t.description || '',
                 status: t.status || 'todo',
                 priority: t.priority || 'medium',
+                dueDate: t.dueDate,
                 createdAt: t.createdAt || new Date().toISOString()
             }));
         } catch (error) {
@@ -29,6 +39,7 @@ export const taskService = {
             description: t.description || '',
             status: t.status || 'todo',
             priority: t.priority || 'medium',
+            dueDate: t.dueDate,
             createdAt: t.createdAt || new Date().toISOString()
         };
     },
@@ -42,6 +53,7 @@ export const taskService = {
             description: t.description || '',
             status: t.status || 'todo',
             priority: t.priority || 'medium',
+            dueDate: t.dueDate,
             createdAt: t.createdAt || new Date().toISOString()
         };
     },
@@ -55,6 +67,7 @@ export const taskService = {
             description: t.description || '',
             status: t.status || 'todo',
             priority: t.priority || 'medium',
+            dueDate: t.dueDate,
             createdAt: t.createdAt || new Date().toISOString()
         };
     },

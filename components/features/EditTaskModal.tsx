@@ -21,6 +21,7 @@ export function EditTaskModal({ task, isOpen, onClose }: EditTaskModalProps) {
   const [description, setDescription] = useState(task?.description || '');
   const [status, setStatus] = useState<'todo' | 'in-progress' | 'done'>(task?.status || 'todo');
   const [priority, setPriority] = useState<'low' | 'medium' | 'high'>(task?.priority || 'medium');
+  const [dueDate, setDueDate] = useState(task?.dueDate || '');
   const [isLoading, setIsLoading] = useState(false);
 
   // Update local state when task prop changes
@@ -31,6 +32,7 @@ export function EditTaskModal({ task, isOpen, onClose }: EditTaskModalProps) {
       setDescription(task.description || '');
       setStatus(task.status);
       setPriority(task.priority || 'medium');
+      setDueDate(task.dueDate || '');
     }
   }, [task]);
 
@@ -45,6 +47,7 @@ export function EditTaskModal({ task, isOpen, onClose }: EditTaskModalProps) {
         description,
         status,
         priority,
+        dueDate: dueDate || undefined,
       });
       dispatch(updateTask(updatedTaskData));
       onClose();
@@ -123,6 +126,16 @@ export function EditTaskModal({ task, isOpen, onClose }: EditTaskModalProps) {
                 <option value="medium">Medium</option>
                 <option value="high">High</option>
               </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-900 mb-2">Due Date</label>
+              <input
+                type="date"
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm px-3 py-2 border text-gray-900 bg-white"
+                value={dueDate}
+                onChange={(e) => setDueDate(e.target.value)}
+              />
             </div>
 
             <div className="flex justify-end space-x-3 pt-4">
