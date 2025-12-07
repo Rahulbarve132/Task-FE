@@ -3,7 +3,7 @@ import { store } from '../redux/store';
 import { logout } from '../redux/slices/authSlice';
 
 const api = axios.create({
-    baseURL: 'https://task-tracker-1-ewg3.onrender.com/api',
+    baseURL: 'https://task-be-j22i.onrender.com/api',
     headers: {
         'Content-Type': 'application/json',
     },
