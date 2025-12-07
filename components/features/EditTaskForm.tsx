@@ -58,7 +58,7 @@ export function EditTaskForm({ task }: EditTaskFormProps) {
           onChange={(e) => setStatus(e.target.value as any)}
         >
           <option value="todo">To Do</option>
-          <option value="in-progress">In Progress</option>
+          <option value="in_progress">In Progress</option>
           <option value="done">Done</option>
         </select>
       </div>

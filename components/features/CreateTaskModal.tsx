@@ -15,7 +15,7 @@ export function CreateTaskModal() {
   const { isCreateModalOpen, isLoading } = useSelector((state: RootState) => state.tasks.uiState);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [status, setStatus] = useState<'todo' | 'in-progress' | 'done'>('todo');
+  const [status, setStatus] = useState<'todo' | 'in_progress' | 'done'>('todo');
   const [priority, setPriority] = useState<'low' | 'medium' | 'high'>('medium');
   const [dueDate, setDueDate] = useState('');
 
@@ -83,7 +83,7 @@ export function CreateTaskModal() {
                 onChange={(e) => setStatus(e.target.value as any)}
               >
                 <option value="todo">To Do</option>
-                <option value="in-progress">In Progress</option>
+                <option value="in_progress">In Progress</option>
                 <option value="done">Done</option>
               </select>
             </div>

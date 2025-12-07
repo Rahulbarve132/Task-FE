@@ -58,7 +58,7 @@ export function TaskCard({ task, onEdit, onDelete }: TaskCardProps) {
   const statusVariant =
     task.status === 'done'
       ? 'success'
-      : task.status === 'in-progress'
+      : task.status === 'in_progress'
       ? 'warning'
       : 'default';
 
@@ -74,7 +74,7 @@ export function TaskCard({ task, onEdit, onDelete }: TaskCardProps) {
     : 'Medium';
 
   const statusLabel = task.status === 'todo' ? 'To Do' : 
-    task.status === 'in-progress' ? 'In Progress' : 'Done';
+    task.status === 'in_progress' ? 'In Progress' : 'Done';
 
   return (
     <Card className="p-4 hover:shadow-md transition-shadow">

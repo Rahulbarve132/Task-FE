@@ -108,7 +108,7 @@ export function Filters() {
           >
             <option value="">All Statuses</option>
             <option value="todo">To Do</option>
-            <option value="in-progress">In Progress</option>
+            <option value="in_progress">In Progress</option>
             <option value="done">Done</option>
           </select>
         </div>

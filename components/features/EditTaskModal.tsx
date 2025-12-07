@@ -19,7 +19,7 @@ export function EditTaskModal({ task, isOpen, onClose }: EditTaskModalProps) {
   const dispatch = useDispatch();
   const [title, setTitle] = useState(task?.title || '');
   const [description, setDescription] = useState(task?.description || '');
-  const [status, setStatus] = useState<'todo' | 'in-progress' | 'done'>(task?.status || 'todo');
+  const [status, setStatus] = useState<'todo' | 'in_progress' | 'done'>(task?.status || 'todo');
   const [priority, setPriority] = useState<'low' | 'medium' | 'high'>(task?.priority || 'medium');
   const [dueDate, setDueDate] = useState(task?.dueDate || '');
   const [isLoading, setIsLoading] = useState(false);
@@ -110,7 +110,7 @@ export function EditTaskModal({ task, isOpen, onClose }: EditTaskModalProps) {
                 onChange={(e) => setStatus(e.target.value as any)}
               >
                 <option value="todo">To Do</option>
-                <option value="in-progress">In Progress</option>
+                <option value="in_progress">In Progress</option>
                 <option value="done">Done</option>
               </select>
             </div>
