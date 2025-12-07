@@ -7,6 +7,7 @@ import { logout } from '../../redux/slices/authSlice';
 import { Button } from '../ui/Button';
 import { useRouter } from 'next/navigation';
 import { LogOut, User as UserIcon } from 'lucide-react';
+import { authService } from '../../services/authService';
 
 export function Navbar() {
   const { user, isAuthenticated } = useSelector((state: RootState) => state.auth);
@@ -14,8 +15,17 @@ export function Navbar() {
   const router = useRouter();
 
   const handleLogout = async () => {
-    dispatch(logout());
-    // ProtectedRoute will handle the redirect automatically
+    try {
+      // Call the logout API
+      await authService.logout();
+    } catch (error) {
+      console.error('Logout API error:', error);
+      // Continue with logout even if API call fails
+    } finally {
+      // Clear local state
+      dispatch(logout());
+      // ProtectedRoute will handle the redirect automatically
+    }
   };
 
   if (!isAuthenticated) return null;

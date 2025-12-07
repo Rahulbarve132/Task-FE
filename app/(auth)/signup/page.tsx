@@ -29,10 +29,10 @@ export default function SignupPage() {
     e.preventDefault();
     dispatch(setLoading(true));
     try {
-      const data = await authService.signup({ name, email, password });
-      dispatch(setUser({ user: data.user, token: data.token }));
+      await authService.signup({ name, email, password });
       dispatch(setLoading(false));
-      router.push('/dashboard');
+      // Redirect to login page after successful signup
+      router.push('/login');
     } catch (err: any) {
       dispatch(setError(err.response?.data?.message || 'Signup failed'));
     }
