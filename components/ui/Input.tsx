@@ -16,15 +16,15 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="w-full">
         {label && (
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-semibold text-gray-700 mb-2">
             {label}
           </label>
         )}
         <input
           ref={ref}
           className={cn(
-            'block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border text-gray-900 bg-white',
-            error && 'border-red-300 focus:border-red-500 focus:ring-red-500',
+            'block w-full rounded-xl bg-gray-50 shadow-sm focus:bg-white focus:ring-2 focus:ring-indigo-500/20 text-sm px-4 py-3 border-0 text-gray-900 transition-all placeholder:text-gray-400',
+            error && 'bg-red-50 focus:ring-red-500/20',
             className
           )}
           {...props}
